@@ -13,6 +13,8 @@ const [toobig,Settoobig] = useState(false)
 const [empty,Setempty] = useState(false)
 const [limit,Setlimit] = useState(false)
 const [hit,Sethit] = useState(true)
+const [sohigher,Setsohigher] = useState(false)
+const [solower,Setsolower] = useState(false)
 
 function reset(){
     console.log(randomNumber);
@@ -26,6 +28,8 @@ function reset(){
     Setempty(false)
     Setlimit(false)
     Sethit(true)
+    Setsohigher(false)
+    Setsolower(false)
 }
 function  Setries(){
   Settries(tries+1)
@@ -59,7 +63,15 @@ function check (){
       }
       else if (randomNumber>value){
         Setries()
-        Sethigher(true)
+        if((Math.abs(randomNumber-value)<=10)){
+          Setsohigher(true)
+          Sethigher(false)
+        }
+        else{
+          Sethigher(true)
+          Setsohigher(false)
+        }
+        Setsolower(false)
         Setlower(false)
         SetPerfect(false)
         Settoobig(false)
@@ -67,7 +79,16 @@ function check (){
       }
       else if (randomNumber<value){
         Setries()
-        Setlower(true)
+        if((Math.abs(randomNumber-value)<=10)){
+          Setsolower(true)
+          Setlower(false)
+        }
+        else{
+          Setlower(true)
+          Setsolower(false)
+
+        }
+        Setsohigher(false)
         SetPerfect(false)
         Sethigher(false)
         Settoobig(false)
@@ -104,6 +125,7 @@ return (
           <Button title="CHECK" onPress={limittries}/>
           </View>        
         </View>
+        
       </View>
 
       <View style={styles.divstyle}></View>
@@ -119,12 +141,14 @@ return (
       {/* <ImageBackground source={require('./assets/images/icon.png') } style={{width: '100%', height: '100%'}}> */}
 
       <Text style={styles.text3}>{
-      perfect ? "Got it!🎉 Perfect Guess. \n"+ `The number was ✨${randomNumber}✨.` 
-      : limit ? `You have reached the limit of 10 tries.🤯\nThe number was\n☠️${randomNumber}☠️.`
-      : lower ? "Your guess is too high.📈\ntry going lower.🥺"  
-      : higher? "Your guess is too low.📉\ntry going higher.🥺" 
-      : empty? "Please enter a number 😐"
-      : toobig? "Please enter a number\nbetween 0 and 99.😔"
+      perfect ? "Got It!🎉 Perfect Guess. \n"+ `The Number was ✨${randomNumber}✨.` 
+      : limit ? `You Have Reached The Limit Of 10 Tries.🤯\nThe Number was\n☠️${randomNumber}☠️.`
+      : solower ? "Your Guess Is So Close😲\nBut Still High.📈\nTry Going Lower.🥺"
+      : sohigher ? "Your Guess Is So Close😲\nBut Still Low.📉\nTry Going Lower.🥺"
+      : lower ? "Your Guess Is Too High.📈\nTry Going Lower.🥺"
+      : higher? "Your Guess Is Too Low.📉\nTry Going Higher.🥺"
+      : empty? "Please Enter A Number 😐"
+      : toobig? "Please Enter A Number\nBetween 0 and 99.😔"
       : "Lower OR Higher\n🎮Game🎮"}</Text>
 
       {/* </ImageBackground> */}
@@ -199,7 +223,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   text3:{
-    fontSize: 32,
+    fontSize: 30,
     width: "100%",
     height: "100%",
     textAlign: "center",
